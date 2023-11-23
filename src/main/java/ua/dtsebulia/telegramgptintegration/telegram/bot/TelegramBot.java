@@ -7,10 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.File;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.UserProfilePhotos;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.dtsebulia.telegramgptintegration.gpt.controller.GPTController;
 import ua.dtsebulia.telegramgptintegration.telegram.client.model.ChatLog;
@@ -31,30 +28,35 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final ClientRepository clientRepository;
     private final ChatLogRepository chatLogRepository;
 
+    private static final String START_COMMAND = "/start";
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
 
             String messageText = update.getMessage().getText();
             Client client = getClientFromUpdate(update);
-            saveClient(client);
+            saveClientIfNotExists(client);
 
             String response;
-            if (messageText.equals("/start")) {
-                try {
-                    response = sendWelcomeMessage(client.getId());
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                }
+            if (messageText.equals(START_COMMAND)) {
+                response = sendWelcomeMessage(client.getId());
             } else {
-                try {
-                    response = gptController.sendTestMessage(messageText);
-                    sendMessage(client.getId(), response);
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                }
+                response = processNonStartCommand(messageText, client);
             }
+
             logChatMessage(client, messageText, response);
+        }
+    }
+
+    private String processNonStartCommand(String messageText, Client client) {
+        try {
+            String response = gptController.sendTestMessage(messageText);
+            sendMessage(client.getId(), response);
+            return response;
+        } catch (TelegramApiException e) {
+            log.error("Error sending message to client {}: {}", client.getId(), e.getMessage(), e);
+            return "An error occurred while processing your request.";
         }
     }
 
@@ -72,17 +74,14 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private Client getClientFromUpdate(Update update) {
-        long clientId = update.getMessage().getFrom().getId();
-        String userName = update.getMessage().getFrom().getUserName();
-        String firstName = update.getMessage().getFrom().getFirstName();
-        String lastName = update.getMessage().getFrom().getLastName();
-        String imgUrl;
 
-        try {
-            imgUrl = getClientProfilePhoto(clientId);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
+        User user = update.getMessage().getFrom();
+
+        long clientId = user.getId();
+        String userName = user.getUserName();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        String imgUrl = getClientProfilePhoto(clientId);
 
         return Client.builder()
                 .id(clientId)
@@ -93,52 +92,71 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .build();
     }
 
-    private String getClientProfilePhoto(long clientId) throws TelegramApiException {
+    private String getClientProfilePhoto(long clientId) {
+        try {
+            GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos();
+            getUserProfilePhotos.setUserId(clientId);
+            getUserProfilePhotos.setLimit(1);
 
-        GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos();
-        getUserProfilePhotos.setUserId(clientId);
-        getUserProfilePhotos.setLimit(1);
+            UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
 
-        UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
+            if (userProfilePhotos != null && userProfilePhotos.getTotalCount() > 0) {
+                PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).stream()
+                        .max(Comparator.comparing(PhotoSize::getFileSize))
+                        .orElse(null);
 
-        if (userProfilePhotos.getTotalCount() > 0) {
-            PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).stream()
-                    .max(Comparator.comparing(PhotoSize::getFileSize))
-                    .orElse(null);
+                if (photoSize != null) {
+                    GetFile getFile = new GetFile();
+                    getFile.setFileId(photoSize.getFileId());
 
-            if (photoSize != null) {
-                GetFile getFile = new GetFile();
-                getFile.setFileId(photoSize.getFileId());
+                    File file = execute(getFile);
 
-                File file = execute(getFile);
-
-                return file.getFileUrl(config.getToken());
+                    return file.getFileUrl(config.getToken());
+                }
             }
-        } else {
-            return null;
+        } catch (TelegramApiException e) {
+            log.error("Error getting profile photo for client {}: {}", clientId, e.getMessage(), e);
         }
         return null;
     }
 
-    private void saveClient(Client client) {
-        if (clientRepository.findById(client.getId()).isEmpty()) {
-            clientRepository.save(client);
-        }
+    private void saveClientIfNotExists(Client client) {
+        clientRepository.findById(client.getId()).ifPresentOrElse(
+                existingClient -> log.debug("Client {} already exists", existingClient.getId()),
+                () -> {
+                    clientRepository.save(client);
+                    log.debug("Client {} saved", client.getId());
+                }
+        );
     }
 
-    private String sendWelcomeMessage(long clientId) throws TelegramApiException {
-        String welcomeMessage = "Hi! I'm a test bot created by @d3n41kk that uses OpenAI API. My name is Alzheimer because I can remember only one of your messages. Ask any of your questions, and I'll try to answer them. Please note that the waiting time for a response can last up to a minute due to the time of requests.";
-        sendMessage(clientId, welcomeMessage);
+    private String sendWelcomeMessage(long clientId) {
+        String welcomeMessage = "Hi! I'm a test bot created by @d3n41kk that uses OpenAI API. " +
+                "My name is Alzheimer because I can remember only one of your messages. " +
+                "Ask any of your questions, and I'll try to answer them. " +
+                "Please note that the waiting time for a response can last up to a minute due to the time of requests.";
+
+        try {
+            sendMessage(clientId, welcomeMessage);
+        } catch (TelegramApiException e) {
+            log.error("Error sending welcome message to client {}: {}", clientId, e.getMessage(), e);
+        }
         return welcomeMessage;
     }
 
     private void sendMessage(long clientId, String textToSend) throws TelegramApiException {
-
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(clientId));
         message.setText(textToSend);
-
         execute(message);
+    }
+
+    public void sendMessageToClient(long clientId, String message) {
+        try {
+            sendMessage(clientId, message);
+        } catch (TelegramApiException e) {
+            log.error("Error sending message to client {}: {}", clientId, e.getMessage(), e);
+        }
     }
 
     @Override
@@ -149,14 +167,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return config.getToken();
-    }
-
-    public void sendMessageToClient(long clientId, String message) {
-        try {
-            sendMessage(clientId, message);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
 
