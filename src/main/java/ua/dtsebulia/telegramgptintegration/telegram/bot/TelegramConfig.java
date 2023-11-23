@@ -1,4 +1,4 @@
-package ua.dtsebulia.telegramgptintegration.telegram;
+package ua.dtsebulia.telegramgptintegration.telegram.bot;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

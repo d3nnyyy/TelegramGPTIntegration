@@ -1,4 +1,4 @@
-package ua.dtsebulia.telegramgptintegration.telegram;
+package ua.dtsebulia.telegramgptintegration.telegram.bot;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.ContextRefreshedEvent;
