@@ -1,0 +1,43 @@
+/* ClientProfile.css */
+.user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+}
+
+.user-info-img {
+        margin-right: 20px;
+}
+
+.user-link {
+        text-decoration: none;
+        color: inherit;
+        transition: background-color 0.3s ease;
+}
+
+.user-link:hover {
+        background-color: #f0f0f0;
+}
+
+.user-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+}
+
+.user-info-text {
+        display: flex;
+        flex-direction: column;
+}
+
+.user-info-fullname {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+}
+
+.user-info-username {
+        font-size: 14px;
+        color: #555;
+        margin: 0;
+}
