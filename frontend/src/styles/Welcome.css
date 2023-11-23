@@ -1,0 +1,63 @@
+/* Welcome.css */
+.welcome-container {
+        text-align: center;
+        padding: 20px;
+}
+
+h1 {
+        color: var(--dark_blue, #003E6A);
+        font-family: Poppins;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin: 0;
+}
+
+.welcome-message {
+        font-family: Poppins;
+        font-size: 16px;
+        color: var(--dark_blue, #003E6A);
+        margin-top: 20px;
+}
+
+.welcome-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+}
+
+.register-link,
+.login-link {
+        color: var(--white, #FFF);
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        display: block;
+        width: 200px;
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        background: var(--dark_blue, #003E6A);
+        box-shadow: -16px -16px 32px 0px rgba(140, 190, 219, 0.25) inset, 4px 4px 16px 0px rgba(0, 62, 106, 0.25) inset, 8px 8px 16px 0px rgba(16, 16, 16, 0.25);
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        margin-bottom: 10px;
+}
+
+.register-link:hover,
+.login-link:hover {
+        background: var(--light_blue, #C4DCE9);
+}
+
+.link {
+        color: var(--dark_blue, #003E6A);
+        text-decoration: underline;
+        font-family: Poppins;
+        font-size: 14px;
+        margin-top: 10px;
+}
