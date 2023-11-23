@@ -1,0 +1,52 @@
+/* ClientPage.css */
+.user-page-container {
+        display: flex;
+}
+
+.user-container {
+        padding: 20px;
+}
+
+.user-img {
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        object-fit: cover;
+}
+
+.user-text {
+        margin-top: 20px;
+}
+
+.user-fullname {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0;
+}
+
+.user-username {
+        font-size: 20px;
+        margin: 0;
+}
+
+.message-input-container {
+        max-width: 80%;
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+}
+
+.message-input-container input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-size: 14px;
+}
+
+.message-input-container .send-icon {
+        cursor: pointer;
+        font-size: 20px;
+        color: var(--dark_blue, #003E6A)
+}

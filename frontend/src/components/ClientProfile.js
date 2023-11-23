@@ -17,7 +17,7 @@ export default function ClientProfile({ client }) {
         return (
                 <div className='user-info'>
                         <Link
-                                to={`/users/${client.id}`}
+                                to={`/clients/${client.id}`}
                                 className='user-link'>
                                 <div className='user-info-img'>
                                         <img className='user-img' src={imgUrl} alt={client.username} />
