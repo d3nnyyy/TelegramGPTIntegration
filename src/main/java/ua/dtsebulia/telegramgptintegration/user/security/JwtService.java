@@ -54,6 +54,16 @@ public class JwtService {
     }
 
     /**
+     * Generates a JWT token for the given user details and additional claims.
+     *
+     * @param userDetails The user details.
+     * @return The generated JWT token.
+     */
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+
+    /**
      * Generates a JWT token with specified claims for the given user details.
      *
      * @param claims      Additional claims to include in the token.
