@@ -1,0 +1,40 @@
+/* Footer.css */
+
+footer {
+        padding: 20px 12rem;
+}
+
+.footer-text {
+        align-items: center;
+        justify-content: center;
+}
+
+.footer-text p {
+        text-align: center;
+        font-family: 'Mulish', serif;
+        font-weight: 300;
+        font-size: 17px;
+        line-height: 28px;
+        color: var(--dark_blue, #003E6A);
+
+}
+
+.social-media {
+        padding-bottom: 10px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+}
+
+.social-media img {
+        color: var(--dark_blue, #003E6A);
+        width: 20px;
+        height: 20px;
+}
+
+.social-media img:hover {
+        transform: scale(90%);
+        transition: 0.1s;
+        animation: ease-in-out 1s infinite;
+}
