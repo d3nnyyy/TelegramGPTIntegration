@@ -70,6 +70,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .response(response)
                 .build();
 
+        log.debug("Saving chat log: {}", chatLog);
         chatLogRepository.save(chatLog);
     }
 
@@ -111,6 +112,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                     File file = execute(getFile);
 
+                    log.debug("Client {} profile photo url: {}", clientId, file.getFileUrl(config.getToken()));
                     return file.getFileUrl(config.getToken());
                 }
             }
