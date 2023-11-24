@@ -15,18 +15,14 @@ export default function ClientProfile({ client }) {
         const imgUrl = client.imgUrl ? client.imgUrl : profilePlaceholder;
 
         return (
-                <div className='user-info'>
-                        <Link
-                                to={`/clients/${client.id}`}
-                                className='user-link'>
-                                <div className='user-info-img'>
-                                        <img className='user-img' src={imgUrl} alt={client.username} />
-                                </div>
-                                <div className='user-info-text'>
-                                        <h2 className='user-info-fullname'>{getFullName()}</h2>
-                                        <p className='user-info-username'>{client.username}</p>
-                                </div>
-                        </Link>
-                </div>
+                <Link
+                        to={`/clients/${client.id}`}
+                        className='client'>
+                        <img className='client-img' src={imgUrl} alt={client.username} />
+                        <div className='client-info'>
+                                <h2 className='client-fullname'>{getFullName()}</h2>
+                                <p className='client-username'>{client.username}</p>
+                        </div>
+                </Link>
         );
 }

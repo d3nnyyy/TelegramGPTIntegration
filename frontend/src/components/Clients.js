@@ -27,7 +27,7 @@ export default function Clients() {
         };
 
         return (
-                <div className='users-container'>
+                <div className='clients-container'>
                         {clients.map(client => (
                                 <ClientProfile key={client.id} client={client} />
                         ))}
