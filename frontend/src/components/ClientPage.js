@@ -66,7 +66,7 @@ export default function ClientPage() {
                 try {
                         const token = localStorage.getItem('token');
                         await axios.post(
-                                `${AZURE_URL}/clients/send-message`,
+                                `${AZURE_URL()}/clients/send-message`,
                                 { clientId: clientId, message: newMessage },
                                 {
                                         headers: {

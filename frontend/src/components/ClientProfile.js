@@ -13,6 +13,7 @@ export default function ClientProfile({ client }) {
         };
 
         const imgUrl = client.imgUrl ? client.imgUrl : profilePlaceholder;
+        console.log('imgUrl:', imgUrl)
 
         return (
                 <Link
