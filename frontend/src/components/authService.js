@@ -1,8 +1,12 @@
 // authService.js
 import axios from 'axios';
 
-const LOCAL_URL = 'http://localhost:8080/api/auth';
-const AZURE_URL = 'https://telegram-gpt-integration-by-d3n41kk.azurewebsites.net';
+const LOCAL_URL = () => {
+        return 'http://localhost:8080/api';
+};
+const AZURE_URL = () => {
+        return 'https://telegram-gpt-integration-by-d3n41kk.azurewebsites.net/api';
+};
 
 const refreshToken = async () => {
         try {

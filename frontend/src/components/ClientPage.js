@@ -6,7 +6,7 @@ import '../styles/ClientPage.css';
 import profilePlaceholder from '../imgs/profile-placeholder.jpg';
 import ChatMessage from './ChatMessage';
 import MessageInput from './MessageInput';
-import AZURE_URL from '../components/authService';
+import { AZURE_URL } from './authService';
 
 
 export default function ClientPage() {
