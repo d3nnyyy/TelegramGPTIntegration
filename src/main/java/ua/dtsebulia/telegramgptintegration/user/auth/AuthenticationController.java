@@ -82,4 +82,17 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        log.info("Received test request");
+        try {
+            return ResponseEntity.ok("Test successful");
+        } catch (Exception e) {
+            log.error("Test failed");
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Test failed", "The test failed."));
+        }
+    }
+
 }
