@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ClientProfile from './ClientProfile'
+import { AZURE_URL } from './authService'
 
 export default function Clients() {
 
@@ -14,7 +15,7 @@ export default function Clients() {
                 try {
 
                         const token = localStorage.getItem('token');
-                        const result = await axios.get('http://localhost:8080/api/clients', {
+                        const result = await axios.get(`${AZURE_URL}/clients`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },

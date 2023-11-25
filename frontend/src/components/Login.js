@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { saveTokens } from './authService';
+import { AZURE_URL, saveTokens } from './authService';
 import axios from 'axios';
 import '../styles/Login.css';
 
@@ -28,7 +28,7 @@ export default function Login() {
 
                 try {
                         if (isFormValid) {
-                                const response = await axios.post('http://localhost:8080/api/auth/login', formData);
+                                const response = await axios.post(`${AZURE_URL}/auth/login`, formData);
 
                                 saveTokens(response);
 

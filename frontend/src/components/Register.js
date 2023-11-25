@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Register.css';
+import { AZURE_URL } from './authService';
 
 export default function Register() {
         const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function Register() {
 
                 try {
                         if (isFormValid) {
-                                const response = await axios.post('http://localhost:8080/api/auth/register', formData);
+                                const response = await axios.post(`${AZURE_URL}/auth/register`, formData);
 
                                 const accessToken = response.data.accessToken;
                                 const refreshToken = response.data.refreshToken;

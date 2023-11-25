@@ -1,10 +1,13 @@
 // authService.js
 import axios from 'axios';
 
+const LOCAL_URL = 'http://localhost:8080/api/auth';
+const AZURE_URL = 'https://telegram-gpt-integration-by-d3n41kk.azurewebsites.net';
+
 const refreshToken = async () => {
         try {
                 const refreshToken = localStorage.getItem('refreshToken');
-                const response = await axios.post('http://localhost:8080/api/auth/refresh', {
+                const response = await axios.post(`${AZURE_URL}/refresh`, {
                         refreshToken: refreshToken,
                 });
 
@@ -30,4 +33,4 @@ const saveTokens = (response) => {
         localStorage.setItem('refreshToken', refreshToken);
 }
 
-export { refreshToken, saveTokens };
+export { refreshToken, saveTokens, LOCAL_URL, AZURE_URL };

@@ -6,6 +6,7 @@ import '../styles/ClientPage.css';
 import profilePlaceholder from '../imgs/profile-placeholder.jpg';
 import ChatMessage from './ChatMessage';
 import MessageInput from './MessageInput';
+import AZURE_URL from '../components/authService';
 
 
 export default function ClientPage() {
@@ -27,7 +28,7 @@ export default function ClientPage() {
         const fetchChatLogs = async () => {
                 try {
                         const token = localStorage.getItem('token');
-                        const chatLogsResult = await axios.get(`http://localhost:8080/api/chatlogs/${clientId}`, {
+                        const chatLogsResult = await axios.get(`${AZURE_URL}/${clientId}`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },
@@ -41,7 +42,7 @@ export default function ClientPage() {
         const fetchClientData = async () => {
                 try {
                         const token = localStorage.getItem('token');
-                        const clientResult = await axios.get(`http://localhost:8080/api/clients/${clientId}`, {
+                        const clientResult = await axios.get(`${AZURE_URL}/${clientId}`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },
@@ -65,7 +66,7 @@ export default function ClientPage() {
                 try {
                         const token = localStorage.getItem('token');
                         await axios.post(
-                                'http://localhost:8080/api/clients/send-message',
+                                `${AZURE_URL}/clients/send-message`,
                                 { clientId: clientId, message: newMessage },
                                 {
                                         headers: {
