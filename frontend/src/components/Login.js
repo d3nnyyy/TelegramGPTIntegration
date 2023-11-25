@@ -28,7 +28,7 @@ export default function Login() {
 
                 try {
                         if (isFormValid) {
-                                const response = await axios.post(`${AZURE_URL}/auth/login`, formData);
+                                const response = await axios.post(`${AZURE_URL()}/auth/login`, formData);
 
                                 saveTokens(response);
 

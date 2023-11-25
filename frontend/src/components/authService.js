@@ -5,13 +5,13 @@ const LOCAL_URL = () => {
         return 'http://localhost:8080/api';
 };
 const AZURE_URL = () => {
-        return 'https://telegram-gpt-integration-by-d3n41kk.azurewebsites.net/api';
+        return 'https://telegram-gpt-integration-backend.azurewebsites.net/api';
 };
 
 const refreshToken = async () => {
         try {
                 const refreshToken = localStorage.getItem('refreshToken');
-                const response = await axios.post(`${AZURE_URL}/refresh`, {
+                const response = await axios.post(`${AZURE_URL()}/auth/refresh`, {
                         refreshToken: refreshToken,
                 });
 

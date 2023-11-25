@@ -34,7 +34,7 @@ export default function Register() {
 
                 try {
                         if (isFormValid) {
-                                const response = await axios.post(`${AZURE_URL}/auth/register`, formData);
+                                const response = await axios.post(`${AZURE_URL()}/auth/register`, formData);
 
                                 const accessToken = response.data.accessToken;
                                 const refreshToken = response.data.refreshToken;

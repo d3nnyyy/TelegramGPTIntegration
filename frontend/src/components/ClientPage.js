@@ -28,7 +28,7 @@ export default function ClientPage() {
         const fetchChatLogs = async () => {
                 try {
                         const token = localStorage.getItem('token');
-                        const chatLogsResult = await axios.get(`${AZURE_URL}/${clientId}`, {
+                        const chatLogsResult = await axios.get(`${AZURE_URL()}/chatlogs/${clientId}`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },
@@ -42,7 +42,7 @@ export default function ClientPage() {
         const fetchClientData = async () => {
                 try {
                         const token = localStorage.getItem('token');
-                        const clientResult = await axios.get(`${AZURE_URL}/${clientId}`, {
+                        const clientResult = await axios.get(`${AZURE_URL()}/clients/${clientId}`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },

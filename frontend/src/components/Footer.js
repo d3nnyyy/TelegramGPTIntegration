@@ -8,10 +8,10 @@ import linkedin from '../imgs/social-media/linkedin.png'
 export default function Footer() {
         return (
                 <footer>
-                        <div class="footer-text">
+                        <div className="footer-text">
                                 <p>Created by Denys Tsebulia    © 2023</p>
                         </div>
-                        <div class="social-media">
+                        <div className="social-media">
                                 <a href="https://github.com/d3nnyyy/" target='_blank' rel='noreferrer noopener'>
                                         <img src={github} alt="github" />
                                 </a>

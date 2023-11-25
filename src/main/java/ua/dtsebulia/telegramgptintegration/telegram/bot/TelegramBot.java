@@ -37,6 +37,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             Client client = getClientFromUpdate(update);
             saveClientIfNotExists(client);
+            updateClientImgIfDiffers(client);
 
             String response;
             if (messageText.equals(START_COMMAND)) {
@@ -130,6 +131,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                     log.debug("Client {} saved", client.getId());
                 }
         );
+    }
+
+    private void updateClientImgIfDiffers(Client client) {
+        Client existingClient = clientRepository.findById(client.getId()).orElse(null);
+        if (existingClient != null && !existingClient.getImgUrl().equals(client.getImgUrl())) {
+            existingClient.setImgUrl(client.getImgUrl());
+            clientRepository.save(existingClient);
+        }
     }
 
     private String sendWelcomeMessage(long clientId) {

@@ -15,7 +15,7 @@ export default function Clients() {
                 try {
 
                         const token = localStorage.getItem('token');
-                        const result = await axios.get(`${AZURE_URL}/clients`, {
+                        const result = await axios.get(`${AZURE_URL()}/clients`, {
                                 headers: {
                                         Authorization: `Bearer ${token}`,
                                 },
